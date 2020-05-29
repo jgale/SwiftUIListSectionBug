@@ -30,25 +30,27 @@ The underlying setup of the project is a lot more complicated than it might look
 * When the sheet is closed, you can see that Item C has been re-sorted into the Even Items section, as desired. However, it's ItemCell has not re-rendered, and it's still be listed as "Odd". This is the bug I'm trying to solve.
 * Debugging in more detail, when I change the type I see that that the `ItemCell` initializer is only called for the 3 _other_ objects (A,B,D). It is never called for Item C. It seems that SwiftUI is reusing the old view for some reason I don't understand. 
 
-## Attempted Mitigations
+# Attempted Mitigations
 
 I've been fighting this for a while so there are quite a few things I tried.
 
-### 1. Switching Tabs
+## 1. Switching Tabs
 
 This is only a temporary bug. Switching to a different tab and coming back will cause the List to re-render properly. If there were enough items in the List, even scrolling down and back will cause the item to re-render.
 
-### 2. Recreate the `Section`s every time
+If I was in the UIKit world, I would just force the underlying 
+
+## 2. Recreate the `Section`s every time
 
 The easiest workaround I've found is to change this line:
 
-```
+```swift
 ForEach(self.viewModel.sections, id: \.name) { section in
 ```
 
 to:
 
-``` 
+```swift 
 ForEach(self.viewModel.sections) { section in
 ```
 
@@ -58,15 +60,20 @@ My understanding is that the sections *should* be the same between re-renders. C
 
 Similarly, if an item gets moved to a new section, it gets rendered properly. In this example, I'm creating both sections every time so that doesn't show up, but for example, if I set all the items to be Even eventually and then 
 
-### 3. Trying to force a re-render for the specific cell
+## 3. Trying to force a re-render for the specific cell
 
 I tried to add a new `Bool` property to the `ListItem` struct, and force the `ItemCell` View to depend on that variable. I explicitly updated the boolean just for that item in the `ItemDetailView` sheet. However, it didn't work. The `ItemCell` initializer still didn't get called when Item C was changed.
 
 There may be some other way to force it to render, and if you have any ideas, I'd love to hear them.
 
+## 4. Using a `NavigationLink` instead of a sheet
 
+I tried using a `NavigationLink` to go into the details of an item. However, when I make edits on that item, it SwiftUI automatically pops me back to the root `ListView` because the underlying list has changed. (I find this frustrating as well, but seems to be the nature of how SwiftUI works.)
 
-## Suggestions?
+# Ideas or Suggestions?
+
+Potentially this overall architecure of subscribing to changes in an underlying repository may be problematic. I'm open to other architectures.
+
+Fundamentally, I still have the business requirement that when a user selects an item from a List, I need to make changes to the underlying List. This seems tricky in Swift UI. 
 
 At this point, I'd even be happy with a hacky workaround. If anyone has an idea, please reach out at github AT jeremygale DOT com.
-
