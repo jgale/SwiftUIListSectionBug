@@ -22,6 +22,10 @@ class ItemRepository {
         self.items = items
     }
     
+    func getItemFromID(_ itemId: UUID) -> ListItem? {
+        return items.first(where: { $0.id == itemId })
+    }
+    
     func updateItem(itemId: UUID, toType type: ListItemType) {
         guard let itemIndex = items.firstIndex(where: { $0.id == itemId }) else { return }
         

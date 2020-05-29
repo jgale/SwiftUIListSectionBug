@@ -66,7 +66,7 @@ struct ContentView: View {
     @ObservedObject var viewModel = ViewModel()
     
     @State var showSheet = false
-    @State var shownListItem: ListItem = ListItem(title: "", type: .even) // throwaway item to initialize
+    @State var shownListItemID: UUID = UUID() // throwaway UUID to initialize
     
     var body: some View {
         List {
@@ -79,7 +79,7 @@ struct ContentView: View {
                     ForEach(section.items) { item in
                         ItemCell(item: item)
                             .onTapGesture {
-                                self.shownListItem = item
+                                self.shownListItemID = item.id
                                 self.showSheet.toggle()
                         }
                     }
@@ -87,7 +87,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: self.$showSheet) {
-            ItemDetailView(viewModel: DetailViewModel(item: self.shownListItem))
+            ItemDetailView(viewModel: DetailViewModel(listItemID: self.shownListItemID))
         }
         .listStyle(GroupedListStyle())
     }
@@ -98,7 +98,10 @@ class DetailViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(item: ListItem) {
+    init(listItemID: UUID) {
+        guard let item = ItemRepository.shared.getItemFromID(listItemID) else {
+            fatalError("Could not find the listItemID specified")
+        }
         self.item = item
         
         $item
