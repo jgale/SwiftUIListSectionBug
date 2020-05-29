@@ -112,7 +112,6 @@ class DetailViewModel: ObservableObject {
 
 struct ItemDetailView: View {
     @ObservedObject var viewModel: DetailViewModel
-    
     var body: some View {
         NavigationView {
             Form {
@@ -129,6 +128,12 @@ struct ItemDetailView: View {
 
 struct ItemCell: View {
     let item: ListItem
+    
+    init(item: ListItem) {
+        // Can set a breakpoint in here to see that it only gets hit 3 times (not including Item B)
+        self.item = item
+    }
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
