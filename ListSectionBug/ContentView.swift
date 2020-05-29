@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum ListItemType: String, CaseIterable {
     case even = "Even"
@@ -28,19 +29,15 @@ struct ListSection: Identifiable {
 class ViewModel: ObservableObject {
     @Published var sections: [ListSection] = []
     
-    var items: [ListItem] = []
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
-        items = [
-            ListItem(title: "First Item", type: .even),
-            ListItem(title: "Second Item", type: .odd),
-            ListItem(title: "Third Item" , type: .even),
-            ListItem(title: "Fourth Item" , type: .odd),
-        ]
-        sortItemsIntoSection()
+        ItemRepository.shared.$items.map { self.sortItemsIntoSection(items: $0) }
+        .assign(to: \.sections, on: self)
+        .store(in: &cancellables)
     }
     
-    func sortItemsIntoSection() {
+    func sortItemsIntoSection(items: [ListItem]) -> [ListSection] {
         var sections: [ListSection] = []
         var evenSection = ListSection(name: "Even Items")
         var oddSection = ListSection(name: "Odd Items")
@@ -60,7 +57,7 @@ class ViewModel: ObservableObject {
             }
         }
         
-        self.sections = sections
+        return sections
     }
 }
 
@@ -72,8 +69,11 @@ struct ContentView: View {
     @State var shownListItem: ListItem = ListItem(title: "", type: .even) // throwaway item to initialize
     
     var body: some View {
-        // Use id: \.name for smooth swipe-to-delete but buggy refreshing :(
         List {
+            // Buggy:
+            //   ForEach(self.viewModel.sections, id: \.name) { section in
+            // Works, but causes other problems:
+            //   ForEach(self.viewModel.sections) { section in
             ForEach(self.viewModel.sections, id: \.name) { section in
                 Section(header: Text(section.name)) {
                     ForEach(section.items) { item in
@@ -96,8 +96,17 @@ struct ContentView: View {
 class DetailViewModel: ObservableObject {
     @Published var item: ListItem
     
+    private var cancellables = Set<AnyCancellable>()
+    
     init(item: ListItem) {
         self.item = item
+        
+        $item
+        .dropFirst()
+        .sink { item in
+            ItemRepository.shared.updateItem(itemId: item.id, toType: item.type)
+        }
+        .store(in: &cancellables)
     }
 }
 
@@ -113,6 +122,7 @@ struct ItemDetailView: View {
                     }
                 }
             }
+            .navigationBarTitle("\(viewModel.item.title)", displayMode: .inline)
         }
     }
 }
