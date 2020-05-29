@@ -38,26 +38,10 @@ class ViewModel: ObservableObject {
     }
     
     func sortItemsIntoSection(items: [ListItem]) -> [ListSection] {
-        var sections: [ListSection] = []
-        var evenSection = ListSection(name: "Even Items")
-        var oddSection = ListSection(name: "Odd Items")
-
-        for item in items {
-            switch item.type {
-            case .even:
-                evenSection.items.append(item)
-            case .odd:
-                oddSection.items.append(item)
-            }
-        }
-        
-        for section in [evenSection, oddSection] {
-            if !section.items.isEmpty {
-                sections.append(section)
-            }
-        }
-        
-        return sections
+         return [
+            ListSection(name: "Even Items", items: items.filter { $0.type == .even }),
+            ListSection(name: "Odd Items", items: items.filter { $0.type == .odd })
+        ]
     }
 }
 
@@ -74,7 +58,7 @@ struct ContentView: View {
             //   ForEach(self.viewModel.sections, id: \.name) { section in
             // Works, but causes other problems:
             //   ForEach(self.viewModel.sections) { section in
-            ForEach(self.viewModel.sections, id: \.name) { section in
+            ForEach(self.viewModel.sections) { section in
                 Section(header: Text(section.name)) {
                     ForEach(section.items) { item in
                         ItemCell(item: item)
