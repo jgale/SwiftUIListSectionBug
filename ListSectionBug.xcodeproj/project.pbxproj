@@ -14,6 +14,7 @@
 		354CE48524815DEA00393339 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 354CE48424815DEA00393339 /* Preview Assets.xcassets */; };
 		354CE48824815DEA00393339 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 354CE48624815DEA00393339 /* LaunchScreen.storyboard */; };
 		354CE490248177C100393339 /* ItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CE48F248177C100393339 /* ItemRepository.swift */; };
+		354CE492248185A700393339 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CE491248185A700393339 /* ItemDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		354CE48724815DEA00393339 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		354CE48924815DEA00393339 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		354CE48F248177C100393339 /* ItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRepository.swift; sourceTree = "<group>"; };
+		354CE491248185A700393339 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				354CE47B24815DE700393339 /* AppDelegate.swift */,
 				354CE47D24815DE700393339 /* SceneDelegate.swift */,
 				354CE47F24815DE700393339 /* ContentView.swift */,
+				354CE491248185A700393339 /* ItemDetailView.swift */,
 				354CE48F248177C100393339 /* ItemRepository.swift */,
 				354CE48124815DEA00393339 /* Assets.xcassets */,
 				354CE48624815DEA00393339 /* LaunchScreen.storyboard */,
@@ -149,6 +152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				354CE492248185A700393339 /* ItemDetailView.swift in Sources */,
 				354CE47C24815DE700393339 /* AppDelegate.swift in Sources */,
 				354CE47E24815DE700393339 /* SceneDelegate.swift in Sources */,
 				354CE490248177C100393339 /* ItemRepository.swift in Sources */,
