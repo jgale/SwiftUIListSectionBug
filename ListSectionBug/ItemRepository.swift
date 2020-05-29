@@ -11,8 +11,8 @@ import Foundation
 class ItemRepository {
     static let shared = ItemRepository(items: [
         ListItem(title: "Item A", type: .even),
-        ListItem(title: "Item B", type: .odd),
-        ListItem(title: "Item C" , type: .even),
+        ListItem(title: "Item B", type: .even),
+        ListItem(title: "Item C" , type: .odd),
         ListItem(title: "Item D" , type: .odd),
     ])
     

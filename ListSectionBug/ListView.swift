@@ -46,7 +46,7 @@ class ViewModel: ObservableObject {
 }
 
 
-struct ContentView: View {
+struct ListView: View {
     @ObservedObject var viewModel = ViewModel()
     
     @State var showSheet = false
@@ -81,7 +81,7 @@ struct ItemCell: View {
     let item: ListItem
     
     init(item: ListItem) {
-        // Can set a breakpoint in here to see that it only gets hit 3 times (not including Item B)
+        // Can set a breakpoint in here to see that it only gets hit 3 times (not including Item C)
         self.item = item
     }
     
@@ -101,6 +101,6 @@ struct ItemCell: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ListView()
     }
 }
