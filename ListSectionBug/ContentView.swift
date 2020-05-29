@@ -58,7 +58,7 @@ struct ContentView: View {
             //   ForEach(self.viewModel.sections, id: \.name) { section in
             // Works, but causes other problems:
             //   ForEach(self.viewModel.sections) { section in
-            ForEach(self.viewModel.sections) { section in
+            ForEach(self.viewModel.sections, id: \.name) { section in
                 Section(header: Text(section.name)) {
                     ForEach(section.items) { item in
                         ItemCell(item: item)
