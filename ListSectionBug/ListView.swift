@@ -62,6 +62,7 @@ struct ListView: View {
                 Section(header: Text(section.name)) {
                     ForEach(section.items) { item in
                         ItemCell(item: item)
+                            .id(item.id)
                             .onTapGesture {
                                 self.shownListItemID = item.id
                                 self.showSheet.toggle()

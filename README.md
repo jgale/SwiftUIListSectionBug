@@ -2,7 +2,23 @@
 
 This is meant to be a relatively small, reproducible example of a bug I've encountered with my SwiftUI app. I don't know if this is a SwiftUI bug or if I'm doing something inherently wrong.
 
-## Bug Description
+# Update: Workaround
+
+A contact at Apple provided a workaround which fixes the bug for me:
+
+
+```swift
+ForEach(section.items) { item in
+    ItemCell(item: item)
+        .id(item.id) // This is the magic workaround
+        // onTapGesture here 
+    }
+}
+```
+
+I've filed a Feedback with Apple FB7721284.
+
+# Bug Description
 
 I have 4 items with the corresponding types:
 1. A: even
